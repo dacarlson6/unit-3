@@ -1,7 +1,15 @@
+//SVG dimension variables
+var w = 900, h = 500;
+
+
+
 //execute script when window is loaded
 window.onload = function(){
 
     var container = d3.select("body") //get the <body> element from the DOM
         .append("svg") //put a new svg in the body
-
+        .attr("height", h) //assign the height
+        .attr("class", "container") //always assign a class (as the block name) for styling and future selection
+        .style("background-color", "rgba(0,0,0,0.2)"); //only put a semicolon at the end of the block!
+        
 };
