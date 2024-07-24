@@ -50,7 +50,16 @@ window.onload = function(){
             maxPop
         ]);
 
-    //
+    //color scale
+    var color = d3.scaleLinear()
+        .range([
+            "#FDBE85",
+            "#D94701"
+        ])
+        .domain([
+            minPop, 
+            maxPop
+        ]);
 
 
 
@@ -93,10 +102,16 @@ window.onload = function(){
         })
         .attr("cx", function(d, i){
             //use the index to place each circle horizontally
-            return 90 + (i * 180);
+            //return 90 + (i * 180);
+            return x(i);
         })
         .attr("cy", function(d){
             //subtract value from 450 to "grow" circles up from the bottom instead of down from the top of the SVG
-            return 450 - (d.population * 0.0005);
-        });
+            //return 450 - (d.population * 0.0005);
+            return y(d.population);
+        })
+        .style("fill", function(d, i) {   //add a fill based on the color scale generator
+            return color(d.population);
+        })
+        .style("stroke", "#000"); //black circle stroke
 };
