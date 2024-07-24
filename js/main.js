@@ -30,7 +30,7 @@ window.onload = function(){
     //create the x scale
     var x = d3.scaleLinear() //create the scale
         .range([90, 810]) //output min and max
-        .domain([0, cityPop.length - 1]);
+        .domain([0, 3]);
 
     //find the min value of array
     var minPop = d3.min(cityPop, function(d){
@@ -114,4 +114,9 @@ window.onload = function(){
             return color(d.population);
         })
         .style("stroke", "#000"); //black circle stroke
+
+    //create y axis generator
+    var yAxis = d3.axisLeft(y);
+
+
 };
