@@ -1,6 +1,26 @@
 //SVG dimension variables
 var w = 900, h = 500;
 
+//bubble chart data
+var cityPop = [
+    {
+        city: 'Madison',
+        population: 233209
+    },
+    {
+        city: 'Milwaukee',
+        population: 594833
+    },
+    {
+        city: 'Green Bay',
+        population: 104057
+    },
+    {
+        city: 'Superior',
+        population: 27244
+    }
+];
+
 //execute script when window is loaded
 window.onload = function(){
 
@@ -66,25 +86,7 @@ window.onload = function(){
 
     
 
-    //bubble chart data
-    var cityPop = [
-        {
-            city: 'Madison',
-            population: 233209
-        },
-        {
-            city: 'Milwaukee',
-            population: 594833
-        },
-        {
-            city: 'Green Bay',
-            population: 104057
-        },
-        {
-            city: 'Superior',
-            population: 27244
-        }
-    ];
+    
 
     //create circles for each city
     var circles = container.selectAll(".circles") //create an empty selection
