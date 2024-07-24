@@ -27,6 +27,36 @@ window.onload = function(){
 
     console.log(innerRect);
 
+    //create the x scale
+    var x = d3.scaleLinear() //create the scale
+        .range([90, 810]) //output min and max
+        .domain([0, cityPop.length - 1]);
+
+    //find the min value of array
+    var minPop = d3.min(cityPop, function(d){
+        return d.population;
+    });
+
+    //find the max value of array
+    var maxPop = d3.max(cityPop, function(d){
+        return d.population;
+    });
+
+    //create the y scale
+    var y = d3.scaleLinear()
+        .range([440, 95])
+        .domain([
+            minPop,
+            maxPop
+        ]);
+
+    //
+
+
+
+
+    
+
     //bubble chart data
     var cityPop = [
         {
