@@ -118,5 +118,12 @@ window.onload = function(){
     //create y axis generator
     var yAxis = d3.axisLeft(y);
 
+    //create axis g element and add axis
+    var axis = container.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(50,0)")
+        .call(yAxis);   
+
+
 
 };
