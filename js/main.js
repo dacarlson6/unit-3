@@ -126,6 +126,14 @@ window.onload = function(){
         .attr("transform", "translate(50,0)")
         .call(yAxis);   
 
+    //add title to the chart
+    var title = container.append("text")
+        .attr("class", "title")
+        .attr("text-anchor", "middle")
+        .attr("x", 450)
+        .attr("y", 30)
+        .text("City Populations");
+
 
 
 };
