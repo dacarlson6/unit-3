@@ -19,5 +19,13 @@ function setMap(){
             console.log(csvData);
             console.log(europe);
             console.log(france);
+
+            //translate europe TopoJSON
+            var europeCountries = topojson.feature(europe, europe.objects.EuropeCountries),
+                franceRegions = topojson.feature(france, france.objects.FranceRegions);
+
+            //examine the results
+            console.log(europeCountries);
+            console.log(franceRegions);
         }
     }
