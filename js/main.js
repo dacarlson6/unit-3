@@ -49,7 +49,7 @@ window.onload = function(){
 
     //create the x scale
     var x = d3.scaleLinear() //create the scale
-        .range([90, 810]) //output min and max
+        .range([90, 870]) //output min and max
         .domain([0, 3]);
 
     //find the min value of array
@@ -133,7 +133,7 @@ window.onload = function(){
         .attr("text-anchor", "left")
         .attr("y", function(d){
             //vertical position centered on each circle
-            return y(d.population) + 5;
+            return y(d.population) - 10;
         });
 
     //first line of label
@@ -158,9 +158,7 @@ window.onload = function(){
     })
     .attr("dy", "15") //vertical offset
     .text(function(d){
-        return "Pop. " + d.population;
+        return "Pop. " + format(d.population);
     });
-
-
 
 };
