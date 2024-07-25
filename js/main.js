@@ -64,11 +64,8 @@ window.onload = function(){
 
     //create the y scale
     var y = d3.scaleLinear()
-        .range([440, 95])
-        .domain([
-            minPop,
-            maxPop
-        ]);
+        .range([450, 50])
+        .domain([0, 700000]);
 
     //color scale
     var color = d3.scaleLinear()
@@ -79,14 +76,7 @@ window.onload = function(){
         .domain([
             minPop, 
             maxPop
-        ]);
-
-
-
-
-    
-
-    
+        ]);    
 
     //create circles for each city
     var circles = container.selectAll(".circles") //create an empty selection
@@ -133,6 +123,39 @@ window.onload = function(){
         .attr("x", 450)
         .attr("y", 30)
         .text("City Populations");
+
+    //create circle labels
+    var labels = container.selectAll(".labels")
+        .data(cityPop)
+        .enter()
+        .append("text")
+        .attr("class", "labels")
+        .attr("text-anchor", "left")
+        .attr("y", function(d){
+            //vertical position centered on each circle
+            return y(d.population) + 5;
+        });
+
+    //first line of label
+    var nameLine = labels.append("tspan")
+        .attr("class", "nameLine")
+        .attr("x", function(d,i) {
+            return x(i) + Math.sqrt(d.population * 0.01 / Math.PI) + 5;
+        })
+        .text(function(d){
+            return d.city;
+        });
+
+    //second line of label
+    var popLine = labels.append("tspan")
+    .attr("class", "popLine")
+    .attr("x", function(d,i){
+        //horizontal position to the right of each circle
+        return x(i) + Math.sqrt(d.population * 0.01 / Math.PI) + 5;
+    })
+    .text(function(d){
+        return "Pop. " + d.population;
+    });
 
 
 
