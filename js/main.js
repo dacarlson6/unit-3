@@ -49,7 +49,7 @@ window.onload = function(){
 
     //create the x scale
     var x = d3.scaleLinear() //create the scale
-        .range([90, 1000]) //output min and max
+        .range([90, 810]) //output min and max
         .domain([0, 3]);
 
     //find the min value of array
