@@ -146,6 +146,9 @@ window.onload = function(){
             return d.city;
         });
 
+    //create format generator
+    var format = d3.format(",");
+    
     //second line of label
     var popLine = labels.append("tspan")
     .attr("class", "popLine")
