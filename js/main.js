@@ -21,7 +21,11 @@ function setMap(){
         .rotate([-2, 0, 0])
         .parallels([43, 62])
         .scale(2500)
-        .translate([width / 2, height / 2]);    
+        .translate([width / 2, height / 2]);  
+    
+    //create path generator
+    var path = d3.geoPath()
+        .projection(projection);
 
     //use Promise.all to parallelize asynchronous data loading
     var promises = [];    
@@ -31,19 +35,35 @@ function setMap(){
     Promise.all(promises).then(callback);
 }
     
-        function callback(data) {
-            var csvData = data[0],
-                europe = data[1],
-                france = data[2];
-            console.log(csvData);
-            console.log(europe);
-            console.log(france);
+    function callback(data) {
+        var csvData = data[0],
+            europe = data[1],
+            france = data[2];
+        console.log(csvData);
+        console.log(europe);
+        console.log(france);
 
-            //translate europe TopoJSON
-            var europeCountries = topojson.feature(europe, europe.objects.EuropeCountries),
-                franceRegions = topojson.feature(france, france.objects.FranceRegions);
+        //translate europe TopoJSON
+        var europeCountries = topojson.feature(europe, europe.objects.EuropeCountries),
+            franceRegions = topojson.feature(france, france.objects.FranceRegions);
 
-            //examine the results
-            console.log(europeCountries);
-            console.log(franceRegions);
-        }
+        //add Europe countries to map
+        var countries = map.append("path")
+            .datum(europeCountries)
+            .attr("class", "countries")
+            .attr("d", path);
+
+        //add France regions to map
+        var regions = map.selectAll(".regions")
+            .data(franceRegions)
+            .enter()
+            .append("path")
+            .attr("class", function(d){
+                return "regions " + d.properties.adm1_code;
+            })
+            .attr("d", path);
+};
+
+        //examine the results
+        //console.log(europeCountries);
+        //console.log(franceRegions);
