@@ -153,6 +153,7 @@ window.onload = function(){
         //horizontal position to the right of each circle
         return x(i) + Math.sqrt(d.population * 0.01 / Math.PI) + 5;
     })
+    .attr("dy", "15") //vertical offset
     .text(function(d){
         return "Pop. " + d.population;
     });
