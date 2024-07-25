@@ -1,9 +1,8 @@
 //begin script when window loads
-window.onload = setMap();
+window.onload = setMap;
 
 //set up choropleth map
-function setMap(){
-
+function setMap() {
     //map frame dimensions
     var width = 960,
         height = 460;
@@ -34,7 +33,7 @@ function setMap(){
         d3.json("data/FranceRegions.topojson") //load choropleth spatial data
     ];
 
-Promise.all(promises).then(callback);
+    Promise.all(promises).then(callback);
     
     function callback(data) {
         var csvData = data[0],
