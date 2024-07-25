@@ -64,5 +64,4 @@ function setMap() {
             })
             .attr("d", path);
     }
-
-}
+};
