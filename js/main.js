@@ -65,3 +65,5 @@ Promise.all(promises).then(callback);
             })
             .attr("d", path);
     }
+
+}
