@@ -23,13 +23,13 @@ function setMap(){
         .scale(2500)
         .translate([width / 2, height / 2]);    
 
-        //use Promise.all to parallelize asynchronous data loading
-        var promises = [
-            d3.csv("data/unitsData.csv"),
-            d3.json("data/EuropeCountries.topojson"),
-            d3.json("data/FranceRegions.topojson"),
-        ];
-        Promise.all(promises).then(callback);
+    //use Promise.all to parallelize asynchronous data loading
+    var promises = [];    
+    promises.push(d3.csv("data/unitsData.csv")); //load attributes from csv    
+    promises.push(d3.json("data/EuropeCountries.topojson")); //load background spatial data    
+    promises.push(d3.json("data/FranceRegions.topojson")); //load choropleth spatial data    
+    Promise.all(promises).then(callback);
+}
     
         function callback(data) {
             var csvData = data[0],
@@ -47,4 +47,3 @@ function setMap(){
             console.log(europeCountries);
             console.log(franceRegions);
         }
-    }
