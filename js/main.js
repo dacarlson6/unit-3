@@ -176,7 +176,7 @@
         //create a scale to size bars proportionally to frame
         var yScale = d3.scaleLinear()
         .range([0, chartHeight])
-        .domain([0, d3.max(csvData, function(d) { return parseFloat(d[expressed]); })]);
+        .domain([0, 105]);
 
         //Example 2.4 line 8...set bars for each province
         var bars = chart.selectAll(".bars")
