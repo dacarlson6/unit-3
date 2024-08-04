@@ -124,20 +124,31 @@
                 });
         }
 
-        //create color scale generator
-        var colorScale = d3.scaleQuantile()
-            .range(colorClasses);
+        //function to create color scale generator
+        function makeColorScale(data){
+            var colorClasses = [
+                "#D4B9DA",
+                "#C994C7",
+                "#DF65B0",
+                "#DD1C77",
+                "#980043"
+            ];
 
-        //build array of all values of the expressed attribute
-        var domainArray = [];
-        for (var i=0; i<data.length; i++){
-            var val = parseFloat(data[i][expressed]);
-            domainArray.push(val);
+            //create color scale generator
+            var colorScale = d3.scaleQuantile()
+                .range(colorClasses);
+
+            //build array of all values of the expressed attribute
+            var domainArray = [];
+            for (var i=0; i<data.length; i++){
+                var val = parseFloat(data[i][expressed]);
+                domainArray.push(val);
+            };
+
+            //assign array of expressed values as scale domain
+            colorScale.domain(domainArray);
+
+            return colorScale;
         };
-
-        //assign array of expressed values as scale domain
-        colorScale.domain(domainArray);
-
-        return colorScale;
 
 })(); //last line of main.js
