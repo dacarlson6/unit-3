@@ -74,6 +74,9 @@
 
             //add enumeration units to the map with color scale
             setEnumerationUnits(franceRegions, map, path, colorScale);
+
+            //call the setChart function to add bars
+            setChart(csvData, colorScale);
         };
 
     }; //end of setMap()
