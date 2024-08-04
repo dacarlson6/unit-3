@@ -110,19 +110,23 @@
         return franceRegions;
     }
 
-    function setEnumerationUnits(franceRegions, map, path, colorScale) {
-        //add France regions to map
-        var regions = map.selectAll(".regions")
-            .data(franceRegions)
-            .enter()
-            .append("path")
-            .attr("class", function(d){
-                return "regions " + d.properties.adm1_code;
-            })
-            .attr("d", path)
-            .style("fill", function(d){
-                var value = d.properties[expressed];
-                return value ? colorScale(value) : "#ccc"; //assign neutral color if no value
+    function setEnumerationUnits(franceRegions, map, path, colorScale) {    
+        //add France regions to map    
+        var regions = map.selectAll(".regions")        
+            .data(franceRegions)        
+            .enter()        
+            .append("path")        
+            .attr("class", function(d){            
+                return "regions " + d.properties.adm1_code;        
+            })        
+            .attr("d", path)        
+            .style("fill", function(d){            
+                var value = d.properties[expressed];            
+                if (value) {                
+                    return colorScale(value);            
+                } else {                
+                    return "#ccc"; // neutral gray color for missing values            
+                }    
             });
     }
 
