@@ -72,7 +72,7 @@
             //add enumeration units to the map
             setEnumerationUnits(franceRegions, map, path);
         };
-        
+
     }; //end of setMap()
 
         function setGraticule(map, path){
@@ -107,7 +107,9 @@
             return franceRegions;
         }
 
-        function setEnumerationUnits(franceRegions, map, path) {
+        //Example 1.3 line 38
+        function setEnumerationUnits(franceRegions, map, path, colorScale){
+
             //add France regions to map
             var regions = map.selectAll(".regions")
                 .data(franceRegions)
@@ -116,7 +118,26 @@
                 .attr("class", function(d){
                     return "regions " + d.properties.adm1_code;
                 })
-                .attr("d", path);
+                .attr("d", path)
+                .style("fill", function(d){
+                    return colorScale(d.properties[expressed]);
+                });
         }
+
+        //create color scale generator
+        var colorScale = d3.scaleQuantile()
+            .range(colorClasses);
+
+        //build array of all values of the expressed attribute
+        var domainArray = [];
+        for (var i=0; i<data.length; i++){
+            var val = parseFloat(data[i][expressed]);
+            domainArray.push(val);
+        };
+
+        //assign array of expressed values as scale domain
+        colorScale.domain(domainArray);
+
+        return colorScale;
 
 })(); //last line of main.js

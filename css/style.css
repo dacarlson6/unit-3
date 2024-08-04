@@ -5,9 +5,9 @@
 }
 
 .regions {
-    fill: #E5E5E5;
-    stroke: #999;
-    stroke-width: 1px;
+    stroke: #000;
+    stroke-width: 0.5px;
+    stroke-linecap: round;
 }
 
 .title {
