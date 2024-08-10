@@ -102,7 +102,8 @@ option {
     margin: 10px;
 }
 
-.legend rect {
-    stroke: #999;
-    stroke-width: 1px;
+.legendContainer {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
 }

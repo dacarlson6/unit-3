@@ -93,7 +93,12 @@
 
             //create the dropdown menu
             createDropdown(csvData);
+
+            // reate the legend
+            createLegend(map);
+
         };
+
     }; //end of setMap()
 
     function setGraticule(map, path){
@@ -340,7 +345,8 @@
             });
 
         //update the legend
-        createLegend(colorScale);
+        var legendContainer = d3.select(".legendContainer");
+        updateLegend(legendContainer);
 
         //Sort, resize, and recolor bars
         var bars = d3.selectAll(".bar")
@@ -473,43 +479,61 @@ function moveLabel(){
     }
 };
 
-//function to create a legend
-function createLegend(colorScale){
-
-    //legend frame
-    var legend = d3.select("#legend")
+function createLegend(map) {
+    var legendContainer = d3.select("body")
         .append("svg")
-        .attr("width", 300)
+        .attr("class", "legendContainer")
+        .attr("width", 400)
         .attr("height", 50)
-        .attr("class", "legend");
+        .style("position", "absolute")
+        .style("left", "50%")
+        .style("transform", "translateX(-50%)")
+        .style("top", (map.node().getBoundingClientRect().bottom + 10) + "px");
 
-    var legendData = colorScale.range().map(function(d){
-        var r = colorScale.invertExtent(d);
-        if (!r[0]) r[0] = 0;
-        if (!r[1]) r[1] = 0;
-        return r;
-    });
+    // Initialize the legend with the current attribute
+    updateLegend(legendContainer);
+}
 
-    var legendG = legend.selectAll("g")
-        .data(legendData)
-        .enter().append("g")
-        .attr("transform", function(d, i) {
-            return "translate(" + (i * 60) + ", 0)";
-        });
+function updateLegend(legendContainer) {
+    // Define the legend color scale
+    var legendColors = d3.scaleQuantile()
+        .domain([0, 100]) // Example domain, adjust as necessary
+        .range(["#D4B9DA", "#C994C7", "#DF65B0", "#DD1C77", "#980043"]);
 
-    legendG.append("rect")
-        .attr("width", 60)
-        .attr("height", 10)
+    var legendWidth = 400;
+    var legendHeight = 50;
+
+    // Clear previous legend elements
+    legendContainer.selectAll("*").remove();
+
+    // Create the legend rectangles
+    legendContainer.selectAll("rect")
+        .data(legendColors.range())
+        .enter()
+        .append("rect")
+        .attr("x", function(d, i) {
+            return i * (legendWidth / legendColors.range().length);
+        })
+        .attr("y", 0)
+        .attr("width", legendWidth / legendColors.range().length)
+        .attr("height", legendHeight)
         .style("fill", function(d) {
-            return colorScale(d[0]);
+            return d;
         });
 
-    legendG.append("text")
-        .attr("x", 30)
-        .attr("y", 25)
-        .attr("text-anchor", "middle")
-        .text(function(d) {
-            return Math.round(d[0]);
+    // Add text labels for the legend
+    legendContainer.selectAll("text")
+        .data(legendColors.range())
+        .enter()
+        .append("text")
+        .attr("x", function(d, i) {
+            return i * (legendWidth / legendColors.range().length) + (legendWidth / legendColors.range().length) / 2;
+        })
+        .attr("y", legendHeight + 15)
+        .style("text-anchor", "middle")
+        .text(function(d, i) {
+            var extent = legendColors.invertExtent(d);
+            return Math.round(extent[0]) + " - " + Math.round(extent[1]);
         });
 }
 
