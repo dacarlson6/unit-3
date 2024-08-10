@@ -94,11 +94,9 @@
             //create the dropdown menu
             createDropdown(csvData);
 
-            // reate the legend
-            createLegend(map);
-
+            //create the legend
+            createLegend(colorScale);
         };
-
     }; //end of setMap()
 
     function setGraticule(map, path){
@@ -162,9 +160,11 @@
             })
             .on("mouseover", function(event, d){
                 highlight(d.properties);
+                setLabel(d.properties);
             })
             .on("mouseout", function(event, d){
                 dehighlight(d.properties);
+                d3.select(".infolabel").remove();
             })
             .on("mousemove", moveLabel);
     }
@@ -262,16 +262,13 @@
             })
             .on("mouseover", function(event, d){
                 highlight(d);
+                setLabel(d);
             })
             .on("mouseout", function(event, d){
                 dehighlight(d);
+                d3.select(".infolabel").remove();
             })
             .on("mousemove", moveLabel);
-
-         
-
-        /* //set bar positions, heights, and colors
-        updateChart(bars, csvData.length, colorScale); */
 
         //create a text element for the chart title
         var chartTitle = chart.append("text")
@@ -345,9 +342,9 @@
             });
 
         //update the legend
-        var legendContainer = d3.select(".legendContainer");
+        /* var legendContainer = d3.select(".legendContainer");
         updateLegend(legendContainer);
-
+ */
         //Sort, resize, and recolor bars
         var bars = d3.selectAll(".bar")
             //Sort bars
@@ -445,60 +442,48 @@ function setLabel(props){
 //function to move info label with mouse
 function moveLabel(){
 
-    //select the label element
-    var label = d3.select(".infolabel")
+    //get width of label
+    var labelWidth = d3.select(".infolabel")
+        .node()
+        .getBoundingClientRect()
+        .width;
 
-    //check if the label exists
-    if (!label.empty()) {
-        //get width of label
-        var labelWidth = label.node().getBoundingClientRect().width;
+    //use coordinates of mousemove event to set label coordinates
+    var x1 = event.clientX + 10,
+        y1 = event.clientY - 75,
+        x2 = event.clientX - labelWidth - 10,
+        y2 = event.clientY + 25;
 
-        //get width of label
-    /*  var labelWidth = d3.select(".infolabel")
-            .node()
-            .getBoundingClientRect()
-            .width; */
+    //horizontal label coordinate, testing for overflow
+    var x = event.clientX > window.innerWidth - labelWidth - 20 ? x2 : x1; 
+    //vertical label coordinate, testing for overflow
+    var y = event.clientY < 75 ? y2 : y1; 
 
-        //use coordinates of mousemove event to set label coordinates
-        var x1 = event.clientX + 10,
-            y1 = event.clientY - 75,
-            x2 = event.clientX - labelWidth - 10,
-            y2 = event.clientY + 25;
-
-        //horizontal label coordinate, testing for overflow
-        var x = event.clientX > window.innerWidth - labelWidth - 20 ? x2 : x1; 
-        //vertical label coordinate, testing for overflow
-        var y = event.clientY < 75 ? y2 : y1; 
-
-        /* d3.select(".infolabel")
-            .style("left", x + "px")
-            .style("top", y + "px"); */
-
-        label.style("left", x + "px")
+    d3.select(".infolabel")
+        .style("left", x + "px")
         .style("top", y + "px");
-    }
+
 };
 
-function createLegend(map) {
-    var legendContainer = d3.select("body")
-        .append("svg")
-        .attr("class", "legendContainer")
-        .attr("width", 400)
+function createLegend(colorScale) {
+    var legend = d3.select("body").append("svg")
+        .attr("class", "legend")
+        .attr("width", 300)
         .attr("height", 50)
-        .style("position", "absolute")
-        .style("left", "50%")
-        .style("transform", "translateX(-50%)")
-        .style("top", (map.node().getBoundingClientRect().bottom + 10) + "px");
+        .attr("transform", "translate(20,20)");
 
-    // Initialize the legend with the current attribute
-    updateLegend(legendContainer);
+    var legendLinear = d3.legendColor()
+        .shapeWidth(30)
+        .orient('horizontal')
+        .scale(colorScale);
+
+    legend.call(legendLinear);
 }
 
 function updateLegend(legendContainer) {
-    // Define the legend color scale
-    var legendColors = d3.scaleQuantile()
-        .domain([0, 100]) // Example domain, adjust as necessary
-        .range(["#D4B9DA", "#C994C7", "#DF65B0", "#DD1C77", "#980043"]);
+    function updateLegend(colorScale) {
+        d3.select(".legend").remove();
+        createLegend(colorScale);
 
     var legendWidth = 400;
     var legendHeight = 50;
@@ -535,6 +520,7 @@ function updateLegend(legendContainer) {
             var extent = legendColors.invertExtent(d);
             return Math.round(extent[0]) + " - " + Math.round(extent[1]);
         });
+    }
 }
 
 })(); //last line of main.js
