@@ -378,17 +378,17 @@
             })
             .style("stroke-width", function(){
                 return getStyle(this, "stroke-width")
-            });
-
-        function getStyle(element, styleName){
-            var styleText = d3.select(element)
-                .select("desc")
-                .text();
-
-            var styleObject = JSON.parse(styleText);
-
-            return styleObject[styleName];
-        };
+        });
     };
+
+    function getStyle(element, styleName){
+        var styleText = d3.select(element)
+            .select("desc")
+            .text();
+
+        var styleObject = JSON.parse(styleText);
+
+        return styleObject[styleName];
+};
 
 })(); //last line of main.js
