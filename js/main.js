@@ -438,26 +438,39 @@ function setLabel(props){
 
 //function to move info label with mouse
 function moveLabel(){
-    //get width of label
-    var labelWidth = d3.select(".infolabel")
-        .node()
-        .getBoundingClientRect()
-        .width;
 
-    //use coordinates of mousemove event to set label coordinates
-    var x1 = event.clientX + 10,
-        y1 = event.clientY - 75,
-        x2 = event.clientX - labelWidth - 10,
-        y2 = event.clientY + 25;
+    //select the label element
+    var label = d3.select(".infolabel")
 
-    //horizontal label coordinate, testing for overflow
-    var x = event.clientX > window.innerWidth - labelWidth - 20 ? x2 : x1; 
-    //vertical label coordinate, testing for overflow
-    var y = event.clientY < 75 ? y2 : y1; 
+    //check if the label exists
+    if (!label.empty()) {
+        //get width of label
+        var labelWidth = label.node().getBoundingClientRect().width;
 
-    d3.select(".infolabel")
-        .style("left", x + "px")
+        //get width of label
+    /*  var labelWidth = d3.select(".infolabel")
+            .node()
+            .getBoundingClientRect()
+            .width; */
+
+        //use coordinates of mousemove event to set label coordinates
+        var x1 = event.clientX + 10,
+            y1 = event.clientY - 75,
+            x2 = event.clientX - labelWidth - 10,
+            y2 = event.clientY + 25;
+
+        //horizontal label coordinate, testing for overflow
+        var x = event.clientX > window.innerWidth - labelWidth - 20 ? x2 : x1; 
+        //vertical label coordinate, testing for overflow
+        var y = event.clientY < 75 ? y2 : y1; 
+
+        /* d3.select(".infolabel")
+            .style("left", x + "px")
+            .style("top", y + "px"); */
+
+        label.style("left", x + "px")
         .style("top", y + "px");
+    }
 };
 
 //function to create a legend
