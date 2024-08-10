@@ -160,7 +160,8 @@
             })
             .on("mouseout", function(event, d){
                 dehighlight(d.properties);
-            });
+            })
+            .on("mousemove", moveLabel);
     }
 
     //function to create color scale generator
@@ -259,7 +260,8 @@
             })
             .on("mouseout", function(event, d){
                 dehighlight(d);
-            });
+            })
+            .on("mousemove", moveLabel);
 
          
 
@@ -397,6 +399,9 @@
             .style("stroke-width", function(){
                 return getStyle(this, "stroke-width")
         });
+
+        //remove dynamic label
+        d3.select(".infolabel").remove();
     };
 
     //function to get the original style of elements
@@ -408,6 +413,48 @@
         var styleObject = JSON.parse(styleText);
 
         return styleObject[styleName];
+};
+
+//function to create dynamic label
+function setLabel(props){
+    //label content
+    var labelAttribute = "<h1>" + props[expressed] +
+        "</h1><b>" + expressed + "</b>";
+
+    //create info label div
+    var infolabel = d3.select("body")
+        .append("div")
+        .attr("class", "infolabel")
+        .attr("id", props.adm1_code + "_label")
+        .html(labelAttribute);
+
+    var regionName = infolabel.append("div")
+        .attr("class", "labelname")
+        .html(props.name);
+};
+
+//function to move info label with mouse
+function moveLabel(){
+    //get width of label
+    var labelWidth = d3.select(".infolabel")
+        .node()
+        .getBoundingClientRect()
+        .width;
+
+    //use coordinates of mousemove event to set label coordinates
+    var x1 = event.clientX + 10,
+        y1 = event.clientY - 75,
+        x2 = event.clientX - labelWidth - 10,
+        y2 = event.clientY + 25;
+
+    //horizontal label coordinate, testing for overflow
+    var x = event.clientX > window.innerWidth - labelWidth - 20 ? x2 : x1; 
+    //vertical label coordinate, testing for overflow
+    var y = event.clientY < 75 ? y2 : y1; 
+
+    d3.select(".infolabel")
+        .style("left", x + "px")
+        .style("top", y + "px");
 };
 
 })(); //last line of main.js
