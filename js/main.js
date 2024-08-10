@@ -146,6 +146,15 @@
                     return "#ccc"; // neutral gray color for missing values            
                 }    
             })
+            .each(function(d){ // store the initial style
+                var element = d3.select(this);
+                var originalStyle = {
+                    "stroke": element.style("stroke"),
+                    "stroke-width": element.style("stroke-width")
+                };
+                element.append("desc")
+                    .text(JSON.stringify(originalStyle));
+            })
             .on("mouseover", function(event, d){
                 highlight(d.properties);
             })
@@ -381,6 +390,7 @@
         });
     };
 
+    //function to get the original style of elements
     function getStyle(element, styleName){
         var styleText = d3.select(element)
             .select("desc")
