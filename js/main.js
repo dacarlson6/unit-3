@@ -145,6 +145,12 @@
                 } else {                
                     return "#ccc"; // neutral gray color for missing values            
                 }    
+            })
+            .on("mouseover", function(event, d){
+                highlight(d.properties);
+            })
+            .on("mouseout", function(event, d){
+                dehighlight(d.properties);
             });
     }
 
@@ -217,11 +223,30 @@
             .attr("class", function(d){
                 return "bar " + d.adm1_code;
             })
-            .attr("width", chartInnerWidth / csvData.length - 1);
+            .attr("width", chartInnerWidth / csvData.length - 1)
+            .attr("x", function(d, i){
+                return i * (chartInnerWidth / csvData.length) + leftPadding;
+            })
+            .attr("height", function(d, i){
+                return 463 - yScale(parseFloat(d[expressed]));
+            })
+            .attr("y", function(d, i){
+                return yScale(parseFloat(d[expressed])) + topBottomPadding;
+            })
+            .style("fill", function(d){
+                return colorScale(d[expressed]);
+            })
+            .on("mouseover", function(event, d){
+                highlight(d);
+            })
+            .on("mouseout", function(event, d){
+                dehighlight(d);
+            });
+
          
 
-        //set bar positions, heights, and colors
-        updateChart(bars, csvData.length, colorScale);
+        /* //set bar positions, heights, and colors
+        updateChart(bars, csvData.length, colorScale); */
 
         //create a text element for the chart title
         var chartTitle = chart.append("text")
@@ -336,5 +361,34 @@
         d3.select(".chartTitle")
             .text("Number of Variable " + expressed[3] + " in each region");
     }
+
+     //function to highlight enumeration units and bars
+     function highlight(props){
+        //change stroke
+        var selected = d3.selectAll("." + props.adm1_code)
+            .style("stroke", "blue")
+            .style("stroke-width", "2");
+    };
+
+    //function to reset the element style on mouseout
+    function dehighlight(props){
+        var selected = d3.selectAll("." + props.adm1_code)
+            .style("stroke", function(){
+                return getStyle(this, "stroke")
+            })
+            .style("stroke-width", function(){
+                return getStyle(this, "stroke-width")
+            });
+
+        function getStyle(element, styleName){
+            var styleText = d3.select(element)
+                .select("desc")
+                .text();
+
+            var styleObject = JSON.parse(styleText);
+
+            return styleObject[styleName];
+        };
+    };
 
 })(); //last line of main.js
