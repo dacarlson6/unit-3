@@ -480,47 +480,10 @@ function createLegend(colorScale) {
     legend.call(legendLinear);
 }
 
-function updateLegend(legendContainer) {
-    function updateLegend(colorScale) {
-        d3.select(".legend").remove();
-        createLegend(colorScale);
-
-    var legendWidth = 400;
-    var legendHeight = 50;
-
-    // Clear previous legend elements
-    legendContainer.selectAll("*").remove();
-
-    // Create the legend rectangles
-    legendContainer.selectAll("rect")
-        .data(legendColors.range())
-        .enter()
-        .append("rect")
-        .attr("x", function(d, i) {
-            return i * (legendWidth / legendColors.range().length);
-        })
-        .attr("y", 0)
-        .attr("width", legendWidth / legendColors.range().length)
-        .attr("height", legendHeight)
-        .style("fill", function(d) {
-            return d;
-        });
-
-    // Add text labels for the legend
-    legendContainer.selectAll("text")
-        .data(legendColors.range())
-        .enter()
-        .append("text")
-        .attr("x", function(d, i) {
-            return i * (legendWidth / legendColors.range().length) + (legendWidth / legendColors.range().length) / 2;
-        })
-        .attr("y", legendHeight + 15)
-        .style("text-anchor", "middle")
-        .text(function(d, i) {
-            var extent = legendColors.invertExtent(d);
-            return Math.round(extent[0]) + " - " + Math.round(extent[1]);
-        });
-    }
+//function to update the legend
+function updateLegend(colorScale) {
+    d3.select(".legend").remove();
+    createLegend(colorScale);
 }
 
 })(); //last line of main.js
