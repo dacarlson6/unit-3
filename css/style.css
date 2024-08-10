@@ -97,3 +97,12 @@ option {
     display: inline-block;
     line-height: 1em;
 }
+
+.legend {
+    margin: 10px;
+}
+
+.legend rect {
+    stroke: #999;
+    stroke-width: 1px;
+}

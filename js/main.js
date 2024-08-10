@@ -339,6 +339,9 @@
                 }    
             });
 
+        //update the legend
+        createLegend(colorScale);
+
         //Sort, resize, and recolor bars
         var bars = d3.selectAll(".bar")
             //Sort bars
@@ -456,5 +459,45 @@ function moveLabel(){
         .style("left", x + "px")
         .style("top", y + "px");
 };
+
+//function to create a legend
+function createLegend(colorScale){
+
+    //legend frame
+    var legend = d3.select("#legend")
+        .append("svg")
+        .attr("width", 300)
+        .attr("height", 50)
+        .attr("class", "legend");
+
+    var legendData = colorScale.range().map(function(d){
+        var r = colorScale.invertExtent(d);
+        if (!r[0]) r[0] = 0;
+        if (!r[1]) r[1] = 0;
+        return r;
+    });
+
+    var legendG = legend.selectAll("g")
+        .data(legendData)
+        .enter().append("g")
+        .attr("transform", function(d, i) {
+            return "translate(" + (i * 60) + ", 0)";
+        });
+
+    legendG.append("rect")
+        .attr("width", 60)
+        .attr("height", 10)
+        .style("fill", function(d) {
+            return colorScale(d[0]);
+        });
+
+    legendG.append("text")
+        .attr("x", 30)
+        .attr("y", 25)
+        .attr("text-anchor", "middle")
+        .text(function(d) {
+            return Math.round(d[0]);
+        });
+}
 
 })(); //last line of main.js
