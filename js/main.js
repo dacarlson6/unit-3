@@ -245,6 +245,15 @@
             .style("fill", function(d){
                 return colorScale(d[expressed]);
             })
+            .each(function(d){ // store the initial style
+                var element = d3.select(this);
+                var originalStyle = {
+                    "stroke": element.style("stroke"),
+                    "stroke-width": element.style("stroke-width")
+                };
+                element.append("desc")
+                    .text(JSON.stringify(originalStyle));
+            })
             .on("mouseover", function(event, d){
                 highlight(d);
             })
