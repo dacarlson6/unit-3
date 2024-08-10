@@ -20,7 +20,6 @@
         .range([463, 0])
         .domain([0, 110]);
 
-
     //begin script when window loads
     window.onload = setMap;
 
@@ -62,11 +61,10 @@
             var csvData = data[0],
                 europe = data[1],
                 france = data[2];
-
             
-            console.log(csvData);
+            /* console.log(csvData);
             console.log(europe);
-            console.log(france);
+            console.log(france); */
 
             //translate europe and France TopoJSONs
             var europeCountries = topojson.feature(europe, europe.objects.EuropeCountries),
@@ -96,7 +94,6 @@
             //create the dropdown menu
             createDropdown(csvData);
         };
-
     }; //end of setMap()
 
     function setGraticule(map, path){
@@ -221,18 +218,7 @@
                 return "bar " + d.adm1_code;
             })
             .attr("width", chartInnerWidth / csvData.length - 1);
-           /*  .attr("x", function(d, i){
-                return i * (chartInnerWidth / csvData.length) + leftPadding;
-            })
-            .attr("height", function(d, i){
-                return 463 - yScale(parseFloat(d[expressed]));
-            })
-            .attr("y", function(d, i){
-                return yScale(parseFloat(d[expressed])) + topBottomPadding;
-            })
-            .style("fill", function(d){
-                return colorScale(d[expressed]);
-            }); */
+         
 
         //set bar positions, heights, and colors
         updateChart(bars, csvData.length, colorScale);
@@ -297,6 +283,8 @@
 
         //recolor enumeration units
         var regions = d3.selectAll(".regions")
+            .transition()
+            .duration(1000)
             .style("fill", function(d){            
                 var value = d.properties[expressed];            
                 if(value) {                
@@ -305,12 +293,18 @@
                     return "#ccc";            
                 }    
             });
+
         //Sort, resize, and recolor bars
         var bars = d3.selectAll(".bar")
             //Sort bars
             .sort(function(a, b){
                 return b[expressed] - a[expressed];
-            });
+            })
+            .transition() //add animation
+            .delay(function(d, i){
+                return i * 20;
+            })
+            .duration(500);
 
         updateChart(bars, csvData.length, colorScale);
     }; //end of changeAttribute()
