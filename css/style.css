@@ -103,7 +103,6 @@ option {
 }
 
 .legendContainer {
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 10px;
+    margin-top: 20px;
+    text-align: center;
 }
