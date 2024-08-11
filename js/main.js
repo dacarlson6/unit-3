@@ -465,7 +465,7 @@ function moveLabel(){
 };
 
 function createLegend(colorScale) {
-    var legend = d3.select("body").append("svg")
+    var legend = d3.select(".legendContainer").append("svg")
         .attr("class", "legend")
         .attr("width", 300)
         .attr("height", 50)
