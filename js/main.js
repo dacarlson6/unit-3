@@ -330,45 +330,38 @@
 
         //recolor enumeration units
         var regions = d3.selectAll(".regions")
-            .transition()
-            .duration(1000)
-            .style("fill", function(d){            
-                var value = d.properties[expressed];            
-                if(value) {                
-                    return colorScale(value);            
-                } else {                
-                    return "#ccc";            
-                }    
-            });
+        .transition()
+        .duration(1000)
+        .style("fill", function(d){            
+            var value = d.properties[expressed];            
+            if(value) {                
+                return colorScale(value);           
+            } else {                
+                return "#ccc";            
+            }    
+        });
 
         //update the legend
         updateLegend(colorScale);
  
         //Sort, resize, and recolor bars
         var bars = d3.selectAll(".bar")
+            //Sort bars
             .sort(function(a, b){
                 return b[expressed] - a[expressed];
             })
             .transition() //add animation
-            .duration(1000)
-            .attr("x", function(d, i){
-                return i * (chartInnerWidth / csvData.length) + leftPadding;
+            .delay(function(d, i){
+                return i * 20
             })
-            .attr("height", function(d, i){
-                return 463 - yScale(parseFloat(d[expressed]));
-            })
-            .attr("y", function(d, i){
-                return yScale(parseFloat(d[expressed])) + topBottomPadding;
-            })
-            .style("fill", function(d){
-                return colorScale(d[expressed]);
-            });
+            .duration(500);
+
+        updateChart(bars, csvData.length, colorScale);
 
         //update the chart title
         d3.select(".chartTitle")
             .text("Number of Variable " + expressed[3] + " in each region");
 
-        //updateChart(bars, csvData.length, colorScale);
     }; //end of changeAttribute()
 
     //function to position, size, and color bars in chart
