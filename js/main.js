@@ -342,7 +342,7 @@
         });
 
         //update the legend
-        updateLegend(colorScale);
+        //updateLegend(colorScale);
  
         //Sort, resize, and recolor bars
         var bars = d3.selectAll(".bar")
@@ -361,6 +361,9 @@
         //update the chart title
         d3.select(".chartTitle")
             .text("Number of Variable " + expressed[3] + " in each region");
+
+        // Update the legend
+        updateLegend(colorScale);
 
     }; //end of changeAttribute()
 
@@ -470,11 +473,21 @@ function moveLabel(){
 };
 
 function createLegend(colorScale) {
-    var legend = d3.select(".legendContainer")
+    //select the legend container and clear any existing content
+    var legendContainer = d3.select(".legendContainer").html("");
+
+    var legend = legendContainer.append("svg")
+        .attr("class", "legend")
+        .attr("width", 300)
+        .attr("height", 50);
+
+
+
+   /*  var legend = d3.select(".legendContainer")
         .append("svg")
         .attr("class", "legend")
         .attr("width", 300)
-        .attr("height", 50)
+        .attr("height", 50) */
         //.attr("transform", "translate(20,20)");
 
     var legendLinear = d3.legendColor()
@@ -486,8 +499,13 @@ function createLegend(colorScale) {
 }
 
 //function to update the legend
-function updateLegend(colorScale) {
+/* function updateLegend(colorScale) {
     d3.select(".legend").remove();
+    createLegend(colorScale);
+} */
+
+//function to update the legend
+function updateLegend(colorScale) {
     createLegend(colorScale);
 }
 
