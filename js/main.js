@@ -342,9 +342,8 @@
             });
 
         //update the legend
-        /* var legendContainer = d3.select(".legendContainer");
-        updateLegend(legendContainer);
- */
+        updateLegend(colorScale);
+ 
         //Sort, resize, and recolor bars
         var bars = d3.selectAll(".bar")
             //Sort bars
@@ -470,7 +469,7 @@ function createLegend(colorScale) {
         .attr("class", "legend")
         .attr("width", 300)
         .attr("height", 50)
-        .attr("transform", "translate(20,20)");
+        //.attr("transform", "translate(20,20)");
 
     var legendLinear = d3.legendColor()
         .shapeWidth(30)
